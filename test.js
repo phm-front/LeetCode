@@ -1,15 +1,23 @@
-var search = function(nums, target) {
-  let left = 0, right = nums.length - 1;
-  while (left <= right) {
-      const mid = Math.floor((right - left) / 2) + left;
-      const num = nums[mid];
-      if (num === target) {
-          return mid;
-      } else if (num > target) {
-          right = mid - 1;
+function merge(arr1, arr2) {
+  let i = 0, j = 0, res = []
+  while(i < arr1.length || j < arr2.length) {
+      if (arr1.length === i) {
+          res.push(arr2[j++])
+          continue
+      }
+      if (arr2.length === j) {
+          res.push(arr1[i++])
+          continue
+      }
+      if (arr1[i] > arr2[j]) {
+          res.push(arr2[j++])
+      } else if (arr1[i] < arr2[j]) {
+          res.push(arr1[i++])
       } else {
-          left = mid + 1;
+          res.push(arr2[j++])
+          res.push(arr1[i++])
       }
   }
-  return -1;
-};
+  return res
+}
+console.log(merge([1, 5, 9], [2, 4, 7, 13]))
