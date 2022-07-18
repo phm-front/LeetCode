@@ -4,36 +4,36 @@
  */
 // 归并排序 找到mid 分别排好 lo...mid 和 mid+1...hi 然后merge左右两个有序数组
 var sortArray = function (nums) {
-  function merge(arr1, arr2) {
-    let i = 0,
-      j = 0,
-      res = [];
-    while (i < arr1.length || j < arr2.length) {
-      if (arr1.length === i) {
-        res.push(arr2[j++]);
-        continue;
-      }
-      if (arr2.length === j) {
-        res.push(arr1[i++]);
-        continue;
-      }
-      if (arr1[i] > arr2[j]) {
-        res.push(arr2[j++]);
-      } else if (arr1[i] < arr2[j]) {
-        res.push(arr1[i++]);
+  let temp = new Array(nums.length);
+  function merge(nums, lo, mid, hi) {
+    for (let i = lo; i <= hi; i++) {
+      temp[i] = nums[i];
+    }
+    // 双指针合并有序数组
+    let i = lo,
+      j = mid + 1;
+    for (let p = lo; p <= hi; p++) {
+      if (i === mid + 1) {
+        nums[p] = temp[j++];
+      } else if (j === hi + 1) {
+        nums[p] = temp[i++];
+      } else if (temp[i] > temp[j]) {
+        nums[p] = temp[j++];
       } else {
-        res.push(arr2[j++]);
-        res.push(arr1[i++]);
+        nums[p] = temp[i++];
       }
     }
-    return res;
   }
+  // 排序gbSort
   function gbSort(nums, lo, hi) {
-    if (lo === hi) return [nums[lo]];
-    const mid = Math.floor((hi - lo) / 2) + lo;
-    let leftArr = gbSort(nums, lo, mid);
-    let rightArr = gbSort(nums, mid + 1, hi);
-    return merge(leftArr, rightArr);
+    if (lo === hi) return;
+    const mid = Math.floor((hi + lo) / 2);
+    gbSort(nums, lo, mid);
+    gbSort(nums, mid + 1, hi);
+    merge(nums, lo, mid, hi);
   }
-  return gbSort(nums, 0, nums.length - 1);
+  gbSort(nums, 0, nums.length - 1);
+  console.log(temp)
+  return nums;
 };
+console.log(sortArray([3, 1, 8, 4, 6]));
